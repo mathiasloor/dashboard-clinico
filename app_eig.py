@@ -6,7 +6,7 @@ from datetime import datetime as dt
 import pathlib
 import plotly.graph_objects as go 
 import dash_bootstrap_components as dbc
-
+import os
 ############# Fase 1: Planificación del Dashboard #############
 # 1. Estructura del Dashboard:
 #    - Se organiza en dos columnas principales:
