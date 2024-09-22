@@ -273,11 +273,16 @@ def actualizar_graficas_adicionales(clinica, start_date, end_date, fuentes, clic
         )
 
     return fig_tiempo_espera, fig_satisfaccion
+#development
 
-# Modificar para usar el puerto y host correctos
+# Ejecutar el servidor
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))  # Obtener el puerto de la variable de entorno
-    app.run_server(host="0.0.0.0", port=port)
+    app.run_server(debug=True, port=8080)
+    
+# Modificar para usar el puerto y host correctos (producción)
+#if __name__ == "__main__":
+ #   port = int(os.environ.get("PORT", 8080))  # Obtener el puerto de la variable de entorno
+  #  app.run_server(host="0.0.0.0", port=port)
     
 ############# Conclusiones del Proyecto #############
 
