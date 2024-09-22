@@ -604,7 +604,6 @@ def render_page_content(pathname, genre_filter, platform_filter, year_filter, cr
                          dcc.Graph(figure=sunburst_sales_chart(df_filtered))])
     
     return html.Div([html.H1("404: Página no encontrada"), html.P("La página que buscas no existe.")])
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))  # Obtener el puerto de la variable de entorno
     app.run_server(host="0.0.0.0", port=port)
