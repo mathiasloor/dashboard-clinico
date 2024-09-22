@@ -321,7 +321,7 @@ sidebar = html.Div(
         html.P("Menu"),
         dbc.Nav(
             [
-                dbc.NavLink("Ventas por Género", href="/sales", active="exact", id="link-sales", className="nav-item", style=nav_item_style),
+                dbc.NavLink("Ventas por Género", href="/", active="exact", id="link-sales", className="nav-item", style=nav_item_style),
                 dbc.NavLink("Puntuaciones y Ventas", href="/platforms", active="exact", id="link-platforms", className="nav-item", style=nav_item_style),
                 dbc.NavLink("Palabras mas comunes", href="/wordcloud", active="exact", id="link-wordcloud", className="nav-item", style=nav_item_style),
                 dbc.NavLink("Ventas Regionales y Puntuaciones", href="/heatmap", active="exact", id="link-heatmap", className="nav-item", style=nav_item_style),
@@ -573,7 +573,7 @@ def render_page_content(pathname, genre_filter, platform_filter, year_filter, cr
     if rating_filter:
         df_filtered = df_filtered[df_filtered['Rating'].isin(rating_filter)]
 
-    if pathname == "/sales":
+    if pathname == "/":
         return html.Div([html.H3("Ventas Globales por Género"), dcc.Graph(figure=genre_sales_bar_chart(df_filtered))])
     
     elif pathname == "/platforms":
