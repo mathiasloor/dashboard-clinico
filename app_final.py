@@ -608,4 +608,3 @@ def render_page_content(pathname, genre_filter, platform_filter, year_filter, cr
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))  # Obtener el puerto de la variable de entorno
     app.run_server(host="0.0.0.0", port=port)
-
