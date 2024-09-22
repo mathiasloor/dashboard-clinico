@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import io
 import base64
 import matplotlib
+import os
 
 # Usar el backend 'Agg' para evitar errores relacionados con el hilo principal
 matplotlib.use('Agg')
