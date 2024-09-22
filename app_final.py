@@ -40,6 +40,19 @@ year_ranges = {
 
 # Función para manejar nulos en el gráfico de barras para ventas globales por género
 def genre_sales_bar_chart(df, selected_genres=None):
+    """
+    Genera un gráfico de barras que muestra las ventas globales por género.
+
+    Parámetros:
+    - df: DataFrame con los datos.
+    - selected_genres: Lista de géneros a incluir en el gráfico.
+
+    Retorna:
+    - fig: Objeto figura de Plotly del gráfico de barras.
+    
+    Este gráfico muestra la cantidad total de ventas globales de videojuegos agrupadas por género.
+    Ayuda a identificar cuáles son los géneros que han generado más ventas a nivel global.
+    """
     if selected_genres:
         df = df[df['Genre'].isin(selected_genres)]
     if df.empty:
@@ -67,13 +80,27 @@ def genre_sales_bar_chart(df, selected_genres=None):
         hovermode="x unified",
         plot_bgcolor='rgba(0,0,0,0)',  # Hacer transparente el fondo del gráfico
         paper_bgcolor='rgba(0,0,0,0)',  # Hacer transparente el fondo del papel
+         # Líneas de fondo (grid) activadas para el eje y
+        yaxis=dict(showgrid=True, gridcolor='lightgrey'),  # Color de las líneas de fondo
+        xaxis=dict(showgrid=False),  # Mantener el eje x sin líneas de cuadrícula
         modebar_remove=['zoom', 'pan', 'zoomIn', 'zoomOut', 'autoScale', 'resetScale', "select2d","lasso"]
         )
     return fig
 
-
 # Gráfico de burbujas para ventas por plataforma
 def platform_sales_bubble_chart(df):
+    """
+    Genera un gráfico de burbujas que muestra la relación entre puntuaciones medias de críticos y usuarios con las ventas globales por plataforma.
+
+    Parámetros:
+    - df: DataFrame con los datos.
+
+    Retorna:
+    - fig: Objeto figura de Plotly del gráfico de burbujas.
+
+    Cada burbuja representa una plataforma, donde el tamaño indica el total de ventas globales.
+    Ayuda a visualizar la popularidad de las plataformas en términos de ventas y puntuaciones.
+    """
     platform_sales = df.groupby('Platform').agg(total_sales=('Global_Sales', 'sum'),
                                                 avg_critic_score=('Critic_Score', 'mean'),
                                                 avg_user_score=('User_Score', 'mean')).reset_index()
@@ -85,6 +112,18 @@ def platform_sales_bubble_chart(df):
 
 # Heatmap de correlación mejorado
 def correlation_heatmap(df):
+    """
+    Genera un heatmap que muestra la correlación entre diferentes variables de ventas y puntuaciones.
+
+    Parámetros:
+    - df: DataFrame con los datos.
+
+    Retorna:
+    - fig: Objeto figura de Plotly del heatmap.
+
+    Este heatmap muestra las correlaciones entre ventas en diferentes regiones y puntuaciones de críticos y usuarios.
+    Útil para identificar relaciones fuertes o débiles entre las variables.
+    """
     # Seleccionamos solo las columnas relevantes y eliminamos valores nulos
     df_corr = df[['Global_Sales', 'Critic_Score', 'User_Score', 'NA_Sales', 'EU_Sales', 'JP_Sales', 'Other_Sales']].dropna()
     
@@ -123,9 +162,19 @@ def correlation_heatmap(df):
 
     return fig
 
-
 # WordCloud
 def generate_wordcloud(text):
+    """
+    Genera una imagen de WordCloud a partir del texto proporcionado.
+
+    Parámetros:
+    - text: Cadena de texto para generar la nube de palabras.
+
+    Retorna:
+    - encoded_image: Imagen codificada en base64 de la WordCloud.
+
+    Esta función se utiliza para crear una representación visual de las palabras más comunes en los títulos de los juegos.
+    """
     wordcloud = WordCloud(width=400, height=200, background_color='white').generate(text)
     img = io.BytesIO()
     plt.figure(figsize=(5, 2.5), facecolor=None)
@@ -138,6 +187,18 @@ def generate_wordcloud(text):
     return f"data:image/png;base64,{encoded_image}"
 
 def generate_wordclouds_by_year(df):
+    """
+    Genera nubes de palabras para juegos antiguos (antes del 2000) y nuevos (desde el 2000 en adelante).
+
+    Parámetros:
+    - df: DataFrame con los datos.
+
+    Retorna:
+    - old_wordcloud: Imagen codificada en base64 de la nube de palabras para juegos antiguos.
+    - new_wordcloud: Imagen codificada en base64 de la nube de palabras para juegos nuevos.
+
+    Ayuda a visualizar las palabras más comunes en los títulos de juegos en diferentes períodos.
+    """
     old_games = df[df['Year_of_Release'] < 2000]
     new_games = df[df['Year_of_Release'] >= 2000]
     old_games_text = ' '.join(old_games['Name'].dropna())
@@ -150,6 +211,18 @@ import plotly.graph_objects as go
 
 # Gráfico de líneas con puntos y dos ejes y para puntuaciones medias de usuarios y críticos
 def line_chart_scores_over_time(df):
+    """
+    Genera un gráfico de líneas que muestra la evolución de las puntuaciones medias de críticos y usuarios a lo largo del tiempo.
+
+    Parámetros:
+    - df: DataFrame con los datos.
+
+    Retorna:
+    - fig: Objeto figura de Plotly del gráfico de líneas.
+
+    Este gráfico visualiza cómo han cambiado las puntuaciones medias a lo largo de los años.
+    Utiliza dos ejes y para acomodar diferentes escalas (0-100 para críticos, 0-10 para usuarios).
+    """
     # Agrupamos por año de lanzamiento y calculamos las puntuaciones medias
     df_grouped = df.groupby('Year_of_Release').agg(
         avg_critic_score=('Critic_Score', 'mean'), 
@@ -210,9 +283,20 @@ def line_chart_scores_over_time(df):
 
     return fig
 
-
 # Gráfico de Sunburst optimizado para mayor legibilidad
 def sunburst_sales_chart(df):
+    """
+    Genera un gráfico de sunburst que representa la distribución de ventas globales por género y plataforma.
+
+    Parámetros:
+    - df: DataFrame con los datos.
+
+    Retorna:
+    - fig: Objeto figura de Plotly del gráfico sunburst.
+
+    Este gráfico es útil para observar qué géneros y plataformas dominan el mercado en términos de ventas globales.
+    Los nodos interiores representan los géneros, y los nodos exteriores representan las plataformas.
+    """
     # Agrupar datos por ventas globales y filtrar los top 5 géneros y plataformas
     top_genres = df['Genre'].value_counts().nlargest(5).index
     top_platforms = df['Platform'].value_counts().nlargest(5).index
@@ -248,9 +332,20 @@ def sunburst_sales_chart(df):
 
     return fig
 
-
 # Gráfico de barras apiladas para la distribución de ventas por las 10 principales plataformas
 def sales_distribution_stacked_bar_chart(df):
+    """
+    Genera un gráfico de barras apiladas visualizando la distribución de ventas para las 10 principales plataformas por región.
+
+    Parámetros:
+    - df: DataFrame con los datos.
+
+    Retorna:
+    - fig: Objeto figura de Plotly del gráfico de barras apiladas.
+
+    Este gráfico muestra cómo se distribuyen las ventas en diferentes regiones (NA, EU, JP, Otras) para las plataformas más populares.
+    Ayuda a entender el mercado global por plataforma y región.
+    """
     top_platforms = df.groupby('Platform')['Global_Sales'].sum().sort_values(ascending=False).nlargest(10).index
 
     df_top_platforms = df[df['Platform'].isin(top_platforms)]
@@ -291,6 +386,17 @@ def sales_distribution_stacked_bar_chart(df):
 
 # Consola de resumen con estadísticas clave en base a los filtros actuales
 def summary_console(df_filtered):
+    """
+    Genera una consola de resumen que muestra estadísticas clave basadas en los filtros actuales.
+
+    Parámetros:
+    - df_filtered: DataFrame después de aplicar los filtros.
+
+    Retorna:
+    - html.Div: Un Div que contiene las estadísticas resumidas.
+
+    Muestra el número total de juegos, puntuaciones medias de críticos y usuarios, y ventas globales totales basadas en los filtros actuales.
+    """
     total_games = df_filtered['Name'].shape[0]
     avg_critic_score = df_filtered['Critic_Score'].mean()
     avg_user_score = df_filtered['User_Score'].mean()
@@ -600,10 +706,16 @@ def render_page_content(pathname, genre_filter, platform_filter, year_filter, cr
                          dcc.Graph(figure=sales_distribution_stacked_bar_chart(df_filtered))])
 
     elif pathname == "/sunburst":
-        return html.Div([html.H3("Ventas Globales por Género, Plataforma y Año de Lanzamiento"),
+        return html.Div([html.H3("Ventas Globales por Género y Plataforma"),
                          dcc.Graph(figure=sunburst_sales_chart(df_filtered))])
     
     return html.Div([html.H1("404: Página no encontrada"), html.P("La página que buscas no existe.")])
+# Ejecutar el servidor
+# Ejecutar el servidor
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))  # Obtener el puerto de la variable de entorno
-    app.run_server(host="0.0.0.0", port=port)
+    app.run_server(debug=True, port=8080)
+    '''
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    app.run_server(host="0.0.0.0", port=port) 
+'''
