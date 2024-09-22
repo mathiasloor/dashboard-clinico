@@ -712,10 +712,10 @@ def render_page_content(pathname, genre_filter, platform_filter, year_filter, cr
     return html.Div([html.H1("404: Página no encontrada"), html.P("La página que buscas no existe.")])
 # Ejecutar el servidor
 # Ejecutar el servidor
+    '''
 if __name__ == "__main__":
     app.run_server(debug=True, port=8080)
     '''
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     app.run_server(host="0.0.0.0", port=port) 
-'''
